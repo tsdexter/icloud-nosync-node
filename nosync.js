@@ -53,11 +53,12 @@ if (!args.n && nogitline) {
   shell.echo(
     "\n🖕 iCloud - Step " +
       step +
-      ": Modifying .gitignore to ignore the node_modules symlink"
+      ": Modifying .gitignore to ignore the node_modules symlink and .nosync folder"
   );
   step++;
   shell.exec('echo "# ignore node_modules symlink" >> .gitignore');
   shell.exec("find node_modules -type l >> .gitignore");
+  shell.exec('echo "node_modules.nosync" >> .gitignore');
 }
 
 // done
