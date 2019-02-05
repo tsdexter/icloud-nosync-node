@@ -1,4 +1,4 @@
-# 🖕iCloud
+# 🖕iCloud (from 🔋's everywhere)
 ## iCloud NoSync node
 
 This package gives you access to `nosync-node` or `nsn` command which does some work to stop iCloud from syncing `node_modules` and forever eating your processing power, bandwidth, and battery.
