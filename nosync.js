@@ -43,22 +43,39 @@ if (nosync === "") {
   shell.exec("ln -s node_modules.nosync node_modules");
 }
 
-// add to gitignore maybe
-const nogitline =
+// add to git exclude maybe
+const nogitexcludeline =
   shell.exec(
-    'find .gitignore -type f -print0 | xargs -0 grep -l "# ignore node_modules symlink"',
+    'find .git/info/exclude -type f -print0 | xargs -0 grep -l "^# ignore node_modules symlink$"',
     { silent: true }
   ).stdout === "";
-if (!args.n && nogitline) {
+if (!args.n && nogitexcludeline) {
   shell.echo(
     "\n🖕 iCloud - Step " +
       step +
-      ": Modifying .gitignore to ignore the node_modules symlink and .nosync folder"
+      ": Modifying .git/info/exclude to ignore the node_modules .nosync folder and symlink"
   );
   step++;
-  shell.exec('echo "# ignore node_modules symlink" >> .gitignore');
-  shell.exec("find node_modules -type l >> .gitignore");
-  shell.exec('echo "node_modules.nosync" >> .gitignore');
+  shell.exec('echo "# ignore node_modules symlink" >> .git/info/exclude');
+  shell.exec('echo "node_modules.nosync/" >> .git/info/exclude');
+  shell.exec('echo "node_modules" >> .git/info/exclude');
+  shell.exec('echo "!node_modules/" >> .git/info/exclude');
+}
+
+// add to gitignore maybe
+const nogitignoreline =
+  shell.exec(
+    'find .gitignore -type f -print0 | xargs -0 grep -lE "^node_modules/?$"',
+    { silent: true }
+  ).stdout === "";
+if (!args.n && nogitignoreline) {
+  shell.echo(
+    "\n🖕 iCloud - Step " +
+      step +
+      ": Modifying .gitignore to ignore the node_modules folder"
+  );
+  step++;
+  shell.exec('echo "node_modules/" >> .gitignore');
 }
 
 // done
